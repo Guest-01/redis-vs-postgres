@@ -2,12 +2,17 @@ const { createClient } = require("redis");
 const { Client } = require("pg");
 const format = require("pg-format");
 
-const testLength = 100000;
+const testLength = 10000;
+
+console.log(`test data length: ${testLength} ...`);
+console.log("===");
 
 (async () => {
   const redisClient = await createClient({ url: "redis://192.168.71.210:6379" })
     .on('error', err => console.log('Redis Client Error', err))
     .connect();
+
+  await redisClient.flushAll();
 
   console.time('redis-set');
   const setPromises = Array(testLength).fill().map((_, i) => redisClient.set(`key${i}`, `value${i}`));
@@ -15,8 +20,9 @@ const testLength = 100000;
   console.timeEnd('redis-set');
 
   console.time('redis-get');
-  const getPromises = Array(testLength).fill().map((_, i) => redisClient.get(`key${i}`));
-  const result = await Promise.all(getPromises);
+  // const getPromises = Array(testLength).fill().map((_, i) => redisClient.get(`key${i}`));
+  // const result = await Promise.all(getPromises);
+  await redisClient.keys("*");
   // console.log(result[0], result[1], "...", result.at(-1));
   console.timeEnd('redis-get');
 
