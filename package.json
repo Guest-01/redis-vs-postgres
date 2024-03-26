@@ -1,7 +1,7 @@
 {
   "name": "redis-vs-postgres",
   "version": "1.0.0",
-  "description": "compare two",
+  "description": "redis의 in-memory 방식이 정말 빠른 것인지 직접 확인해보기",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
